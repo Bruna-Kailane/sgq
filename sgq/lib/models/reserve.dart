@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Reserve {
-  final int id;
+  final String id;
   final DateTime date;
   final TimeOfDay begin;
   final TimeOfDay finish;
@@ -52,7 +52,7 @@ class Reserve {
   }
 
   Reserve copyWith({
-    int? id,
+    String? id,
     DateTime? date,
     TimeOfDay? begin,
     TimeOfDay? finish,

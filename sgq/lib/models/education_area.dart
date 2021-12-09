@@ -1,5 +1,5 @@
 class EducationArea {
-  final int id;
+  final String id;
   final String name;
 
   EducationArea({required this.id, required this.name});
@@ -14,4 +14,13 @@ class EducationArea {
       'name': name,
     };
   }
+
+  EducationArea copyWith({
+    String? id,
+    String? name,
+  }) =>
+      EducationArea(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
 }

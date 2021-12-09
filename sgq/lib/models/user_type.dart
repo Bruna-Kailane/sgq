@@ -1,5 +1,5 @@
 class UserType {
-  final int id;
+  final String id;
   final String name;
   final String description;
 
@@ -17,4 +17,14 @@ class UserType {
       'description': description,
     };
   }
+
+  UserType opyWith({
+    String? id,
+    String? name,
+    String? description,
+  }) =>
+      UserType(
+          id: id ?? this.id,
+          name: name ?? this.name,
+          description: description ?? this.description);
 }
