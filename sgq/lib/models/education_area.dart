@@ -1,4 +1,6 @@
-class EducationArea {
+import 'package:flutter/material.dart';
+
+class EducationArea with ChangeNotifier {
   final String id;
   final String name;
 

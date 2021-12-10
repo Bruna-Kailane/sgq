@@ -1,4 +1,6 @@
-class UserType {
+import 'package:flutter/material.dart';
+
+class UserType with ChangeNotifier {
   final String id;
   final String name;
   final String description;
@@ -18,7 +20,7 @@ class UserType {
     };
   }
 
-  UserType opyWith({
+  UserType copyWith({
     String? id,
     String? name,
     String? description,

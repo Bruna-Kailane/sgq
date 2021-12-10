@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgq/models/education_area.dart';
-import 'package:sgq/repositories/repositorio_education_area.dart';
+import 'package:sgq/models/user_type.dart';
+import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/widget/custom_drawer.dart';
 
-class CadastroArea extends StatelessWidget {
-  static const String routeName = '/cadastroArea';
+class CadastroTypeUser extends StatelessWidget {
+  static const String routeName = '/cadastroTypeUser';
   final formKey = GlobalKey<FormState>();
 
-  CadastroArea({Key? key}) : super(key: key);
+  CadastroTypeUser({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     String name = '';
+    String description = '';
 
-    var repositorio =
-        Provider.of<RepositorioEducationArea>(context, listen: false);
+    var repositorio = Provider.of<RepositorioTipoUser>(context, listen: false);
     // var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Nova Area"),
+        title: const Text("Novo Tipo"),
         actions: [
           IconButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 //salvar
                 formKey.currentState!.save();
-                EducationArea educationArea =
-                    EducationArea(id: UniqueKey().toString(), name: name);
-                repositorio.addArea(educationArea);
+
+                UserType userType = UserType(
+                    id: UniqueKey().toString(),
+                    name: name,
+                    description: description);
+
+                repositorio.addTipo(userType);
 
                 //voltar p home
                 Navigator.of(context).pop();
@@ -47,7 +51,7 @@ class CadastroArea extends StatelessWidget {
             children: [
               Formulario(
                 label: "Nome",
-                hint: "Digite o Nome da Nova Area",
+                hint: "Digite o Nome do Novo Tipo",
                 icon: const Icon(Icons.text_fields),
                 validator: (text) {
                   if (text == null || text.isEmpty) {
@@ -59,6 +63,19 @@ class CadastroArea extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 10),
+              Formulario(
+                label: "Descrição",
+                hint: "Digite a Descrição",
+                icon: const Icon(Icons.text_fields),
+                validator: (text) {
+                  if (text == null || text.isEmpty) {
+                    return "Descrição Obrigatoria";
+                  }
+                },
+                save: (text) {
+                  description = text ?? '';
+                },
+              ),
             ],
           ),
         ),
