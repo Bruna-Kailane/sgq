@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sgq/pages/cadastro_area.dart';
-import 'package:sgq/pages/cadastro_type_user.dart';
 import 'package:sgq/widget/custom_drawer.dart';
 
 class HomeAdm extends StatefulWidget {

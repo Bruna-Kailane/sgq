@@ -6,8 +6,8 @@ class Reserve {
   final TimeOfDay begin;
   final TimeOfDay finish;
   final String description;
-  final int authorUserId;
-  final int keeperUserId;
+  final String authorUserId;
+  final String keeperUserId;
   final int keeperStatus;
   final int reserveStatus;
   final int repeat;
@@ -57,8 +57,8 @@ class Reserve {
     TimeOfDay? begin,
     TimeOfDay? finish,
     String? description,
-    int? authorUserId,
-    int? keeperUserId,
+    String? authorUserId,
+    String? keeperUserId,
     int? keeperStatus,
     int? reserveStatus,
     int? repeat,

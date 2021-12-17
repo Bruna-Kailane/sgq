@@ -9,7 +9,7 @@ import 'package:sgq/utils/defs.dart';
 enum StatusDadosRepositorio { vazio, disponiveis }
 
 class RepositorioEducationArea with ChangeNotifier {
-  List<EducationArea> _lista = [];
+  final List<EducationArea> _lista = [];
 
   StatusDadosRepositorio _statusDados = StatusDadosRepositorio.vazio;
   bool get possuiDados => _statusDados == StatusDadosRepositorio.disponiveis;
