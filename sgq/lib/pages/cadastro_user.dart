@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgq/models/user_type.dart';
 import 'package:sgq/models/users.dart';
-import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/widget/custom_drawer.dart';
 
@@ -23,13 +21,13 @@ class _CadastroUserState extends State<CadastroUser> {
     String name = '';
     String password = '';
     String email = '';
+    String userTypeId = '[#c033a]';
+    String areaId = '[#f54a2]';
 
     var repositorio = Provider.of<RepositorioUsers>(context, listen: false);
-    var repositorioTipo = Provider.of<RepositorioTipoUser>(context);
-    var lista = repositorioTipo.tipo;
+
     // var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
-    String userTypeId = 'um';
-    String areaId = '';
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Novo Usuário"),
@@ -66,7 +64,7 @@ class _CadastroUserState extends State<CadastroUser> {
             children: [
               Formulario(
                 label: "Nome",
-                hint: "Digite o Nome do Novo Tipo",
+                hint: "Digite o Nome do Usuario",
                 icon: const Icon(Icons.text_fields),
                 validator: (text) {
                   if (text == null || text.isEmpty) {
@@ -126,7 +124,29 @@ class _CadastroUserState extends State<CadastroUser> {
                     userTypeId = newValue!;
                   });
                 },
-                items: <String>['um', 'doiss']
+                items: <String>['[#4ac72]', '[#1ca72]', '[#c033a]']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              DropdownButton<String>(
+                value: areaId,
+                icon: const Icon(Icons.arrow_downward),
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    areaId = newValue!;
+                  });
+                },
+                items: <String>['[#f54a2]', '[#b0b90]', '[#1d602]']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
