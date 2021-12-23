@@ -14,10 +14,6 @@ class ListaArea extends StatelessWidget {
     var repositorio = Provider.of<RepositorioEducationArea>(context);
     var lista = repositorio.areas;
 
-    if (!repositorio.possuiDados) {
-      repositorio.loadRemote();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Areas"),

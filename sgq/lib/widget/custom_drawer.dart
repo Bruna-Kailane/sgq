@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sgq/pages/home_adm.dart';
 import 'package:sgq/pages/lista_area.dart';
 import 'package:sgq/pages/lista_type_user.dart';
 import 'package:sgq/pages/lista_users.dart';
+import 'package:sgq/services/autenticacao_servico.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //  final autenticacaoServ = Provider.of<AutenticacaoServico>(context);
+    final autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
     return Drawer(
       child: Column(
@@ -17,6 +19,12 @@ class CustomDrawer extends StatelessWidget {
           AppBar(
             title: const Text("Menu Usuario"),
             automaticallyImplyLeading: false,
+            actions: [
+              IconButton(
+                onPressed: autenticacaoServ.logout,
+                icon: const Icon(Icons.logout_outlined),
+              )
+            ],
           ),
           const Divider(),
           ListTile(

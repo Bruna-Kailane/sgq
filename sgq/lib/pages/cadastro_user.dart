@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/models/users.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
+import 'package:sgq/services/autenticacao_servico.dart';
 import 'package:sgq/widget/custom_drawer.dart';
 
 class CadastroUser extends StatefulWidget {
@@ -15,6 +16,21 @@ class CadastroUser extends StatefulWidget {
 
 class _CadastroUserState extends State<CadastroUser> {
   final formKey = GlobalKey<FormState>();
+  var erro = '';
+
+  submeter(AutenticacaoServico autenticacaoServico, String email,
+      String senha) async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      try {
+        await autenticacaoServico.signUp(email, senha);
+      } on Exception catch (e) {
+        setState(() {
+          erro = e.toString();
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +41,7 @@ class _CadastroUserState extends State<CadastroUser> {
     String areaId = '[#f54a2]';
 
     var repositorio = Provider.of<RepositorioUsers>(context, listen: false);
-
-    // var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
+    var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,6 +52,7 @@ class _CadastroUserState extends State<CadastroUser> {
               if (formKey.currentState!.validate()) {
                 //salvar
                 formKey.currentState!.save();
+                submeter(autenticacaoServ, email, password);
 
                 Users user = Users(
                     id: UniqueKey().toString(),

@@ -14,10 +14,6 @@ class ListaUsers extends StatelessWidget {
     var repositorio = Provider.of<RepositorioUsers>(context);
     var lista = repositorio.users;
 
-    if (!repositorio.possuiDados) {
-      // repositorio.loadRemote();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Usuários"),

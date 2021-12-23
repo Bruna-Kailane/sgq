@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sgq/services/autenticacao_servico.dart';
 
 class Autenticacao extends StatefulWidget {
   static const routeName = '/autenticacao';
@@ -22,7 +24,7 @@ class _AutenticacaoState extends State<Autenticacao> {
     });
   }
 
-  /* submeter(AutenticacaoServico autenticacaoServico) async {
+  submeter(AutenticacaoServico autenticacaoServico) async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       setState(() {
@@ -30,11 +32,7 @@ class _AutenticacaoState extends State<Autenticacao> {
         erro = '';
       });
       try {
-        if (novoUsuario) {
-          await autenticacaoServico.signUp(email, senha);
-        } else {
-          await autenticacaoServico.signIn(email, senha);
-        }
+        await autenticacaoServico.signIn(email, senha);
       } on Exception catch (e) {
         setState(() {
           erro = e.toString();
@@ -44,11 +42,12 @@ class _AutenticacaoState extends State<Autenticacao> {
         processando = false;
       });
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
-    //final autenticacaoServ = Provider.of<AutenticacaoServico>(context, listen: false);
+    final autenticacaoServ =
+        Provider.of<AutenticacaoServico>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -112,7 +111,7 @@ class _AutenticacaoState extends State<Autenticacao> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            //submeter(autenticacaoServ);
+                            submeter(autenticacaoServ);
                           },
                           child: const Text("Login"),
                         ),

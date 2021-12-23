@@ -14,9 +14,6 @@ class ListaTypeUser extends StatelessWidget {
     var repositorio = Provider.of<RepositorioTipoUser>(context);
     var lista = repositorio.tipo;
 
-    if (!repositorio.possuiDados) {
-      repositorio.loadRemote();
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tipo de Usuarios"),
