@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/pages/autenticacao.dart';
 import 'package:sgq/pages/cadastro_area.dart';
+import 'package:sgq/pages/cadastro_reserva.dart';
 import 'package:sgq/pages/cadastro_type_user.dart';
 import 'package:sgq/pages/cadastro_user.dart';
 import 'package:sgq/pages/home_adm.dart';
@@ -10,6 +11,7 @@ import 'package:sgq/pages/lista_type_user.dart';
 import 'package:sgq/pages/lista_users.dart';
 import 'package:sgq/pages/splash.dart';
 import 'package:sgq/repositories/repositorio_education_area.dart';
+import 'package:sgq/repositories/repositorio_reserve.dart';
 import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
@@ -45,6 +47,12 @@ class MyApp extends StatelessWidget {
             update: (ctx, autenticacaoServ, anterior) =>
                 RepositorioUsers(autenticacaoServ),
           ),
+          ChangeNotifierProxyProvider<AutenticacaoServico, RepositorioReserve>(
+            create: (ctx) => RepositorioReserve(
+                Provider.of<AutenticacaoServico>(ctx, listen: false)),
+            update: (ctx, autenticacaoServ, anterior) =>
+                RepositorioReserve(autenticacaoServ),
+          ),
         ],
         builder: (ctx, _) {
           return MaterialApp(
@@ -61,10 +69,11 @@ class MyApp extends StatelessWidget {
             routes: {
               Splash.routeName: (ctx) => const Splash(),
               Autenticacao.routeName: (ctx) => const Autenticacao(),
-              HomeAdm.routeName: (ctx) => const HomeAdm(),
+              HomeAdm.routeName: (ctx) => HomeAdm(),
               CadastroArea.routeName: (ctx) => CadastroArea(),
               CadastroTypeUser.routeName: (ctx) => CadastroTypeUser(),
-              CadastroUser.routeName: (ctx) => const CadastroUser(),
+              CadastroUser.routeName: (ctx) => CadastroUser(),
+              CadastroReserva.routeName: (ctx) => CadastroReserva(),
               ListaArea.routeName: (ctx) => const ListaArea(),
               ListaTypeUser.routeName: (ctx) => const ListaTypeUser(),
               ListaUsers.routeName: (ctx) => const ListaUsers(),

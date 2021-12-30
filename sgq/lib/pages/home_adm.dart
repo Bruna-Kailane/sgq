@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgq/pages/calendario.dart';
 import 'package:sgq/repositories/repositorio_education_area.dart';
 import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
@@ -8,7 +9,7 @@ import 'package:sgq/widget/custom_drawer.dart';
 class HomeAdm extends StatefulWidget {
   static const String routeName = "/";
 
-  const HomeAdm({Key? key}) : super(key: key);
+  HomeAdm({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -35,6 +36,7 @@ class _HomeState extends State<HomeAdm> {
       appBar: AppBar(
         title: const Text("SGQ"),
       ),
+      body: Calendario(),
       drawer: const CustomDrawer(),
     );
   }

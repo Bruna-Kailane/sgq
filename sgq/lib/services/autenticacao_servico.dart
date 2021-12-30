@@ -59,6 +59,7 @@ class AutenticacaoServico with ChangeNotifier {
     final usuario = Usuario(
       id: data['localId'],
       email: email,
+      senha: senha,
       token: data['idToken'],
       expiraEm: DateTime.now().add(
         Duration(seconds: int.parse(data['expiresIn'])),

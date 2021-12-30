@@ -13,6 +13,6 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     final autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
-    return autenticacaoServ.logado ? const HomeAdm() : const Autenticacao();
+    return autenticacaoServ.logado ? HomeAdm() : const Autenticacao();
   }
 }

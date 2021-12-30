@@ -57,6 +57,7 @@ class CustomDrawer extends StatelessWidget {
             },
             title: const Text("Usuários"),
           ),
+          const Divider(),
         ],
       ),
     );

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgq/models/education_area.dart';
+import 'package:sgq/models/user_type.dart';
 import 'package:sgq/models/users.dart';
+import 'package:sgq/repositories/repositorio_education_area.dart';
+import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
 import 'package:sgq/widget/custom_drawer.dart';
@@ -8,7 +12,7 @@ import 'package:sgq/widget/custom_drawer.dart';
 class CadastroUser extends StatefulWidget {
   static const String routeName = '/cadastroUser';
 
-  const CadastroUser({Key? key}) : super(key: key);
+  CadastroUser({Key? key}) : super(key: key);
 
   @override
   State<CadastroUser> createState() => _CadastroUserState();
@@ -37,11 +41,17 @@ class _CadastroUserState extends State<CadastroUser> {
     String name = '';
     String password = '';
     String email = '';
-    String userTypeId = '[#c033a]';
-    String areaId = '[#f54a2]';
-
     var repositorio = Provider.of<RepositorioUsers>(context, listen: false);
     var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
+
+    var rep = Provider.of<RepositorioTipoUser>(context, listen: false);
+    var rt = rep.tipo;
+
+    var r = Provider.of<RepositorioEducationArea>(context, listen: false);
+    var ra = r.areas;
+
+    EducationArea areaId = ra.first;
+    UserType userTypeId = rt.first;
 
     return Scaffold(
       appBar: AppBar(
@@ -59,8 +69,8 @@ class _CadastroUserState extends State<CadastroUser> {
                     name: name,
                     password: password,
                     email: email,
-                    userTypeId: userTypeId,
-                    areaId: areaId);
+                    userTypeId: userTypeId.id,
+                    areaId: areaId.id);
 
                 repositorio.addUser(user);
 
@@ -126,49 +136,45 @@ class _CadastroUserState extends State<CadastroUser> {
                   password = text ?? '';
                 },
               ),
-              DropdownButton<String>(
-                value: userTypeId,
-                icon: const Icon(Icons.arrow_downward),
-                elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    userTypeId = newValue!;
-                  });
-                },
-                items: <String>['[#4ac72]', '[#1ca72]', '[#c033a]']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              DropdownButton<String>(
+              const SizedBox(height: 20),
+              DropdownButton<EducationArea>(
                 value: areaId,
-                icon: const Icon(Icons.arrow_downward),
-                elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
+                focusColor: Theme.of(context).primaryColor,
                 underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
+                  color: Theme.of(context).primaryColor,
+                  height: 2.0,
                 ),
-                onChanged: (String? newValue) {
+                onChanged: (newValue) {
                   setState(() {
-                    areaId = newValue!;
+                    areaId = newValue ?? ra.first;
                   });
                 },
-                items: <String>['[#f54a2]', '[#b0b90]', '[#1d602]']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                items: ra
+                    .map((tipo) => DropdownMenuItem<EducationArea>(
+                          child: Text(tipo.name),
+                          value: tipo,
+                        ))
+                    .toList(),
+              ),
+              const SizedBox(height: 15),
+              DropdownButton<UserType>(
+                value: userTypeId,
+                focusColor: Theme.of(context).primaryColor,
+                underline: Container(
+                  color: Theme.of(context).primaryColor,
+                  height: 2.0,
+                ),
+                onChanged: (newValue) {
+                  setState(() {
+                    userTypeId = newValue ?? rt.first;
+                  });
+                },
+                items: rt
+                    .map((tipo) => DropdownMenuItem<UserType>(
+                          child: Text(tipo.name),
+                          value: tipo,
+                        ))
+                    .toList(),
               ),
             ],
           ),
