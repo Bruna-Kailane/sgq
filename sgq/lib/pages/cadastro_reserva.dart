@@ -5,13 +5,12 @@ import 'package:sgq/models/users.dart';
 import 'package:sgq/repositories/repositorio_reserve.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
-import 'package:sgq/widget/custom_drawer.dart';
 import 'package:intl/intl.dart';
 
 class CadastroReserva extends StatefulWidget {
   static const String routeName = '/cadastroReserva';
 
-  CadastroReserva({Key? key}) : super(key: key);
+  const CadastroReserva({Key? key}) : super(key: key);
 
   @override
   State<CadastroReserva> createState() => _CadastroReservaState();
@@ -19,13 +18,63 @@ class CadastroReserva extends StatefulWidget {
 
 class _CadastroReservaState extends State<CadastroReserva> {
   final formKey = GlobalKey<FormState>();
+  String descricao = '';
+  DateTime data = DateTime.now();
+  TimeOfDay begin = TimeOfDay.now();
+  TimeOfDay finish = TimeOfDay.now();
+
+  Future selecionarData(BuildContext context) async {
+    final dataSelecionada = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2030),
+    );
+    if (dataSelecionada != null) {
+      setState(() {
+        data = dataSelecionada;
+      });
+    }
+  }
+
+  String getText(int cod) {
+    var hours = '';
+    var minutes = '';
+
+    if (cod == 0) {
+      hours = begin.hour.toString().padLeft(2, '0');
+      minutes = begin.minute.toString().padLeft(2, '0');
+    } else {
+      hours = finish.hour.toString().padLeft(2, '0');
+      minutes = finish.minute.toString().padLeft(2, '0');
+    }
+    return 'Seleciona a hora de inicio: $hours:$minutes';
+  }
+
+  Future pickTime(BuildContext context, int cod) async {
+    if (cod == 0) {
+      final newTime = await showTimePicker(
+        context: context,
+        initialTime: begin,
+      );
+
+      if (newTime == null) return;
+
+      setState(() => begin = newTime);
+    } else {
+      final newTime = await showTimePicker(
+        context: context,
+        initialTime: finish,
+      );
+
+      if (newTime == null) return;
+
+      setState(() => finish = newTime);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    String descricao = '';
-    DateTime data = DateTime.now();
-    TimeOfDay begin = TimeOfDay.now();
-    TimeOfDay finish = TimeOfDay.now();
     var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
     var repositorioReserva =
         Provider.of<RepositorioReserve>(context, listen: false);
@@ -39,54 +88,6 @@ class _CadastroReservaState extends State<CadastroReserva> {
       }
     }
     Users keeperUserId = ru.first;
-
-    _selecionarData() {
-      showDatePicker(
-              context: context,
-              lastDate: DateTime(2022),
-              firstDate: DateTime.now(),
-              initialDate: DateTime.now())
-          .then((dataSelecionada) => {
-                if (dataSelecionada != null)
-                  {setState(() => data = dataSelecionada)}
-              });
-    }
-
-    String getText(int cod) {
-      var hours = '';
-      var minutes = '';
-
-      if (cod == 0) {
-        hours = begin.hour.toString().padLeft(2, '0');
-        minutes = begin.minute.toString().padLeft(2, '0');
-      } else {
-        hours = finish.hour.toString().padLeft(2, '0');
-        minutes = finish.minute.toString().padLeft(2, '0');
-      }
-      return 'Seleciona a hora de inicio: $hours:$minutes';
-    }
-
-    Future pickTime(BuildContext context, int cod) async {
-      if (cod == 0) {
-        final newTime = await showTimePicker(
-          context: context,
-          initialTime: begin,
-        );
-
-        if (newTime == null) return;
-
-        setState(() => begin = newTime);
-      } else {
-        final newTime = await showTimePicker(
-          context: context,
-          initialTime: finish,
-        );
-
-        if (newTime == null) return;
-
-        setState(() => finish = newTime);
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -152,7 +153,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
                   ),
                   TextButton(
                     onPressed: () {
-                      _selecionarData();
+                      selecionarData(context);
                     },
                     child: const Icon(Icons.calendar_today),
                   ),
@@ -206,7 +207,6 @@ class _CadastroReservaState extends State<CadastroReserva> {
           ),
         ),
       ),
-      drawer: const CustomDrawer(),
     );
   }
 }

@@ -34,6 +34,13 @@ class RepositorioUsers with ChangeNotifier {
     return 0;
   }
 
+  int verificaAdm(Users user) {
+    if (user.userTypeId == '-MqWY3Y2j8Qyrleru0VU') {
+      return 1; //adm
+    }
+    return 0;
+  }
+
   Users buscaId(String id) {
     return _lista.firstWhere((tipo) => tipo.id == id);
   }

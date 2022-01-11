@@ -3,7 +3,7 @@ import 'package:sgq/pages/cadastro_reserva.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendario extends StatefulWidget {
-  Calendario({Key? key}) : super(key: key);
+  const Calendario({Key? key}) : super(key: key);
 
   @override
   _CalendarioState createState() => _CalendarioState();
