@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/pages/cadastro_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
+import 'package:sgq/services/autenticacao_servico.dart';
 import 'package:sgq/widget/custom_drawer.dart';
 
 class ListaUsers extends StatelessWidget {
@@ -11,18 +12,24 @@ class ListaUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var repositorio = Provider.of<RepositorioUsers>(context);
-    var lista = repositorio.users;
+    var repUser = Provider.of<RepositorioUsers>(context);
+    var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
+    var lista = repUser.users;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Usuários"),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(CadastroUser.routeName);
-              },
-              icon: const Icon(Icons.add))
+          IconButton(onPressed: () {}, icon: const Icon(Icons.list)),
+          if (repUser.verificaAdm(repUser.buscaEmailSenha(
+                  autenticacaoServ.usuario!.email,
+                  autenticacaoServ.usuario!.senha)) ==
+              1)
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CadastroUser.routeName);
+                },
+                icon: const Icon(Icons.add))
         ],
       ),
       body: Stack(
