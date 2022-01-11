@@ -5,7 +5,7 @@ import 'package:sgq/pages/cadastro_area.dart';
 import 'package:sgq/pages/cadastro_reserva.dart';
 import 'package:sgq/pages/cadastro_type_user.dart';
 import 'package:sgq/pages/cadastro_user.dart';
-import 'package:sgq/pages/home_adm.dart';
+import 'package:sgq/pages/home.dart';
 import 'package:sgq/pages/lista_area.dart';
 import 'package:sgq/pages/lista_type_user.dart';
 import 'package:sgq/pages/lista_users.dart';
@@ -69,11 +69,11 @@ class MyApp extends StatelessWidget {
             routes: {
               Splash.routeName: (ctx) => const Splash(),
               Autenticacao.routeName: (ctx) => const Autenticacao(),
-              HomeAdm.routeName: (ctx) => HomeAdm(),
+              Home.routeName: (ctx) => const Home(),
               CadastroArea.routeName: (ctx) => CadastroArea(),
               CadastroTypeUser.routeName: (ctx) => CadastroTypeUser(),
-              CadastroUser.routeName: (ctx) => CadastroUser(),
-              CadastroReserva.routeName: (ctx) => CadastroReserva(),
+              CadastroUser.routeName: (ctx) => const CadastroUser(),
+              CadastroReserva.routeName: (ctx) => const CadastroReserva(),
               ListaArea.routeName: (ctx) => const ListaArea(),
               ListaTypeUser.routeName: (ctx) => const ListaTypeUser(),
               ListaUsers.routeName: (ctx) => const ListaUsers(),

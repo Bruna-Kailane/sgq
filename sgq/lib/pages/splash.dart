@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/pages/autenticacao.dart';
-import 'package:sgq/pages/home_adm.dart';
+import 'package:sgq/pages/home.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
 
 class Splash extends StatelessWidget {
@@ -13,6 +13,6 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     final autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
-    return autenticacaoServ.logado ? HomeAdm() : const Autenticacao();
+    return autenticacaoServ.logado ? const Home() : const Autenticacao();
   }
 }

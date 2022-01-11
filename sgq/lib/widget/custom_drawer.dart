@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgq/pages/home_adm.dart';
+import 'package:sgq/pages/home.dart';
 import 'package:sgq/pages/lista_area.dart';
 import 'package:sgq/pages/lista_type_user.dart';
 import 'package:sgq/pages/lista_users.dart';
@@ -30,7 +30,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             onTap: () {
               //volta para o home
-              Navigator.of(context).pushReplacementNamed(HomeAdm.routeName);
+              Navigator.of(context).pushReplacementNamed(Home.routeName);
             },
             leading: const Icon(Icons.home),
             title: const Text("Home"),

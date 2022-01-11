@@ -6,16 +6,16 @@ import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/widget/custom_drawer.dart';
 
-class HomeAdm extends StatefulWidget {
+class Home extends StatefulWidget {
   static const String routeName = "/";
 
-  HomeAdm({Key? key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<HomeAdm> {
+class _HomeState extends State<Home> {
   var _init = true;
 
   @override
@@ -36,7 +36,7 @@ class _HomeState extends State<HomeAdm> {
       appBar: AppBar(
         title: const Text("SGQ"),
       ),
-      body: Calendario(),
+      body: const Calendario(),
       drawer: const CustomDrawer(),
     );
   }
