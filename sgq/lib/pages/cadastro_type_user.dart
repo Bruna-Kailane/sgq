@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/models/user_type.dart';
 import 'package:sgq/repositories/repositorio_tipo_user.dart';
-import 'package:sgq/widget/custom_drawer.dart';
 
 class CadastroTypeUser extends StatelessWidget {
   static const String routeName = '/cadastroTypeUser';
@@ -16,7 +15,6 @@ class CadastroTypeUser extends StatelessWidget {
     String description = '';
 
     var repositorio = Provider.of<RepositorioTipoUser>(context, listen: false);
-    // var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -80,7 +78,6 @@ class CadastroTypeUser extends StatelessWidget {
           ),
         ),
       ),
-      drawer: const CustomDrawer(),
     );
   }
 }

@@ -7,12 +7,11 @@ import 'package:sgq/repositories/repositorio_education_area.dart';
 import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
-import 'package:sgq/widget/custom_drawer.dart';
 
 class CadastroUser extends StatefulWidget {
   static const String routeName = '/cadastroUser';
 
-  CadastroUser({Key? key}) : super(key: key);
+  const CadastroUser({Key? key}) : super(key: key);
 
   @override
   State<CadastroUser> createState() => _CadastroUserState();
@@ -180,7 +179,6 @@ class _CadastroUserState extends State<CadastroUser> {
           ),
         ),
       ),
-      drawer: const CustomDrawer(),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/models/education_area.dart';
 import 'package:sgq/repositories/repositorio_education_area.dart';
-import 'package:sgq/widget/custom_drawer.dart';
 
 class CadastroArea extends StatelessWidget {
   static const String routeName = '/cadastroArea';
@@ -16,7 +15,6 @@ class CadastroArea extends StatelessWidget {
 
     var repositorio =
         Provider.of<RepositorioEducationArea>(context, listen: false);
-    // var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +61,6 @@ class CadastroArea extends StatelessWidget {
           ),
         ),
       ),
-      drawer: const CustomDrawer(),
     );
   }
 }
