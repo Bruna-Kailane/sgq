@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgq/models/education_area.dart';
-import 'package:sgq/models/user_type.dart';
 import 'package:sgq/models/users.dart';
 import 'package:sgq/repositories/repositorio_education_area.dart';
 import 'package:sgq/repositories/repositorio_tipo_user.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
+import 'package:sgq/widget/formulario.dart';
 
 class CadastroUser extends StatefulWidget {
   static const String routeName = '/cadastroUser';
@@ -20,6 +19,8 @@ class CadastroUser extends StatefulWidget {
 class _CadastroUserState extends State<CadastroUser> {
   final formKey = GlobalKey<FormState>();
   var erro = '';
+  var areaId;
+  var userTypeId;
 
   submeter(AutenticacaoServico autenticacaoServico, String email,
       String senha) async {
@@ -44,13 +45,10 @@ class _CadastroUserState extends State<CadastroUser> {
     var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
 
     var rep = Provider.of<RepositorioTipoUser>(context, listen: false);
-    var rt = rep.tipo;
+    var tipos = rep.tipo;
 
     var r = Provider.of<RepositorioEducationArea>(context, listen: false);
-    var ra = r.areas;
-
-    EducationArea areaId = ra.first;
-    UserType userTypeId = rt.first;
+    var areas = r.areas;
 
     return Scaffold(
       appBar: AppBar(
@@ -68,8 +66,8 @@ class _CadastroUserState extends State<CadastroUser> {
                     name: name,
                     password: password,
                     email: email,
-                    userTypeId: userTypeId.id,
-                    areaId: areaId.id);
+                    userTypeId: userTypeId,
+                    areaId: areaId);
 
                 repositorio.addUser(user);
 
@@ -136,7 +134,8 @@ class _CadastroUserState extends State<CadastroUser> {
                 },
               ),
               const SizedBox(height: 20),
-              DropdownButton<EducationArea>(
+              DropdownButton<String>(
+                hint: const Text("Área do Usuário"),
                 value: areaId,
                 focusColor: Theme.of(context).primaryColor,
                 underline: Container(
@@ -145,18 +144,19 @@ class _CadastroUserState extends State<CadastroUser> {
                 ),
                 onChanged: (newValue) {
                   setState(() {
-                    areaId = newValue ?? ra.first;
+                    areaId = newValue ?? areas.first.id;
                   });
                 },
-                items: ra
-                    .map((tipo) => DropdownMenuItem<EducationArea>(
-                          child: Text(tipo.name),
-                          value: tipo,
+                items: areas
+                    .map((area) => DropdownMenuItem<String>(
+                          child: Text(area.name),
+                          value: area.id,
                         ))
                     .toList(),
               ),
               const SizedBox(height: 15),
-              DropdownButton<UserType>(
+              DropdownButton<String>(
+                hint: const Text("Tipo do Usuário"),
                 value: userTypeId,
                 focusColor: Theme.of(context).primaryColor,
                 underline: Container(
@@ -165,13 +165,13 @@ class _CadastroUserState extends State<CadastroUser> {
                 ),
                 onChanged: (newValue) {
                   setState(() {
-                    userTypeId = newValue ?? rt.first;
+                    userTypeId = newValue ?? tipos.first.id;
                   });
                 },
-                items: rt
-                    .map((tipo) => DropdownMenuItem<UserType>(
+                items: tipos
+                    .map((tipo) => DropdownMenuItem<String>(
                           child: Text(tipo.name),
-                          value: tipo,
+                          value: tipo.id,
                         ))
                     .toList(),
               ),
@@ -179,41 +179,6 @@ class _CadastroUserState extends State<CadastroUser> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Formulario extends StatelessWidget {
-  final String label;
-  final String hint;
-  final Icon? icon;
-  final String? Function(String?)? validator;
-  final Function(String?)? save;
-  final bool obscureText;
-
-  const Formulario({
-    Key? key,
-    required this.label,
-    required this.hint,
-    this.icon,
-    this.validator,
-    this.save,
-    this.obscureText = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: validator,
-      onSaved: save,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-          prefixIcon: icon,
-          labelText: label,
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(40))),
     );
   }
 }

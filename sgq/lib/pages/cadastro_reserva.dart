@@ -6,6 +6,7 @@ import 'package:sgq/repositories/repositorio_reserve.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
 import 'package:intl/intl.dart';
+import 'package:sgq/widget/formulario.dart';
 
 class CadastroReserva extends StatefulWidget {
   static const String routeName = '/cadastroReserva';
@@ -22,6 +23,8 @@ class _CadastroReservaState extends State<CadastroReserva> {
   DateTime data = DateTime.now();
   TimeOfDay begin = TimeOfDay.now();
   TimeOfDay finish = TimeOfDay.now();
+  var repete = 0;
+  var keeperUserId;
 
   Future selecionarData(BuildContext context) async {
     final dataSelecionada = await showDatePicker(
@@ -73,21 +76,53 @@ class _CadastroReservaState extends State<CadastroReserva> {
     }
   }
 
+  Future<int> submeter(
+      RepositorioReserve repositorioReserve, String idAutor, int status) async {
+    if (formKey.currentState!.validate()) {
+      //salvar
+      formKey.currentState!.save();
+
+      Reserve reserve = Reserve(
+          id: UniqueKey().toString(),
+          date: data,
+          begin: begin,
+          finish: finish,
+          description: descricao,
+          authorUserId: idAutor,
+          keeperUserId: keeperUserId,
+          keeperStatus: status,
+          reserveStatus: 0,
+          repeat: 0);
+
+      repositorioReserve.addReserva(reserve);
+
+      return 1;
+    }
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
     var repositorioReserva =
         Provider.of<RepositorioReserve>(context, listen: false);
     var repUser = Provider.of<RepositorioUsers>(context, listen: false);
-    List<Users> ru = [];
+    List<Users> profs = [];
 
     for (var user in repUser.users) {
       if (user.userTypeId == '-MqWYPF_OX9f_lBP3SMi' ||
           user.userTypeId == '-MqX3STsynWDnGdTfrhz') {
-        ru.add(user);
+        profs.add(user);
       }
     }
-    Users keeperUserId = ru.first;
+
+    String idAutor = repUser
+        .buscaEmailSenha(
+            autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha)
+        .id;
+    //se for prof, adm ou tecnico retorna 1- se for aluno retorna 0
+    int status = repUser.buscaTipo(repUser.buscaEmailSenha(
+        autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha));
 
     return Scaffold(
       appBar: AppBar(
@@ -95,29 +130,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
         actions: [
           IconButton(
             onPressed: () {
-              if (formKey.currentState!.validate()) {
-                //salvar
-                formKey.currentState!.save();
-
-                Reserve reserve = Reserve(
-                    id: UniqueKey().toString(),
-                    date: data,
-                    begin: begin,
-                    finish: finish,
-                    description: descricao,
-                    authorUserId: repUser
-                        .buscaEmailSenha(autenticacaoServ.usuario!.email,
-                            autenticacaoServ.usuario!.senha)
-                        .id,
-                    keeperUserId: keeperUserId.id,
-                    keeperStatus: repUser.buscaTipo(repUser.buscaEmailSenha(
-                        autenticacaoServ.usuario!.email,
-                        autenticacaoServ.usuario!.senha)),
-                    reserveStatus: 0,
-                    repeat: 0);
-
-                repositorioReserva.addReserva(reserve);
-
+              if (submeter(repositorioReserva, idAutor, status) == 1) {
                 //voltar p home
                 Navigator.of(context).pop();
               }
@@ -184,7 +197,8 @@ class _CadastroReservaState extends State<CadastroReserva> {
                 ],
               ),
               const SizedBox(height: 10),
-              DropdownButton<Users>(
+              DropdownButton<String>(
+                hint: const Text("Professor Responsavel"),
                 value: keeperUserId,
                 focusColor: Theme.of(context).primaryColor,
                 underline: Container(
@@ -193,13 +207,13 @@ class _CadastroReservaState extends State<CadastroReserva> {
                 ),
                 onChanged: (newValue) {
                   setState(() {
-                    keeperUserId = newValue ?? ru.first;
+                    keeperUserId = newValue ?? profs.first.id;
                   });
                 },
-                items: ru
-                    .map((tipo) => DropdownMenuItem<Users>(
+                items: profs
+                    .map((tipo) => DropdownMenuItem<String>(
                           child: Text(tipo.name),
-                          value: tipo,
+                          value: tipo.id,
                         ))
                     .toList(),
               ),
@@ -207,41 +221,6 @@ class _CadastroReservaState extends State<CadastroReserva> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Formulario extends StatelessWidget {
-  final String label;
-  final String hint;
-  final Icon? icon;
-  final String? Function(String?)? validator;
-  final Function(String?)? save;
-  final bool obscureText;
-
-  const Formulario({
-    Key? key,
-    required this.label,
-    required this.hint,
-    this.icon,
-    this.validator,
-    this.save,
-    this.obscureText = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: validator,
-      onSaved: save,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-          prefixIcon: icon,
-          labelText: label,
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(40))),
     );
   }
 }

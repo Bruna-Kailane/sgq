@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/models/user_type.dart';
 import 'package:sgq/repositories/repositorio_tipo_user.dart';
+import 'package:sgq/widget/formulario.dart';
 
 class CadastroTypeUser extends StatelessWidget {
   static const String routeName = '/cadastroTypeUser';
@@ -78,38 +79,6 @@ class CadastroTypeUser extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Formulario extends StatelessWidget {
-  final String label;
-  final String hint;
-  final Icon? icon;
-  final String? Function(String?)? validator;
-  final Function(String?)? save;
-
-  const Formulario({
-    Key? key,
-    required this.label,
-    required this.hint,
-    this.icon,
-    this.validator,
-    this.save,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: validator,
-      onSaved: save,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      decoration: InputDecoration(
-          prefixIcon: icon,
-          labelText: label,
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(40))),
     );
   }
 }
