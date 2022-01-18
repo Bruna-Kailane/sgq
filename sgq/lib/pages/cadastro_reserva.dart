@@ -38,9 +38,10 @@ class _CadastroReservaState extends State<CadastroReserva> {
         data = dataSelecionada;
       });
     }
+    return Future<void>.value();
   }
 
-  String getText(int cod) {
+  String getText(int cod, String text) {
     var hours = '';
     var minutes = '';
 
@@ -51,7 +52,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
       hours = finish.hour.toString().padLeft(2, '0');
       minutes = finish.minute.toString().padLeft(2, '0');
     }
-    return 'Seleciona a hora de inicio: $hours:$minutes';
+    return 'Seleciona a hora de $text: $hours:$minutes';
   }
 
   Future pickTime(BuildContext context, int cod) async {
@@ -74,31 +75,15 @@ class _CadastroReservaState extends State<CadastroReserva> {
 
       setState(() => finish = newTime);
     }
+
+    return Future<void>.value();
   }
 
-  Future<int> submeter(
-      RepositorioReserve repositorioReserve, String idAutor, int status) async {
-    if (formKey.currentState!.validate()) {
-      //salvar
-      formKey.currentState!.save();
-
-      Reserve reserve = Reserve(
-          id: UniqueKey().toString(),
-          date: data,
-          begin: begin,
-          finish: finish,
-          description: descricao,
-          authorUserId: idAutor,
-          keeperUserId: keeperUserId,
-          keeperStatus: status,
-          reserveStatus: 0,
-          repeat: 0);
-
-      repositorioReserve.addReserva(reserve);
-
-      return 1;
-    }
-    return 0;
+  String formatTimeOfDay(TimeOfDay tod) {
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
+    final format = DateFormat.jm(); //"6:00 AM"
+    return format.format(dt);
   }
 
   @override
@@ -108,6 +93,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
         Provider.of<RepositorioReserve>(context, listen: false);
     var repUser = Provider.of<RepositorioUsers>(context, listen: false);
     List<Users> profs = [];
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
     for (var user in repUser.users) {
       if (user.userTypeId == '-MqWYPF_OX9f_lBP3SMi' ||
@@ -130,7 +116,28 @@ class _CadastroReservaState extends State<CadastroReserva> {
         actions: [
           IconButton(
             onPressed: () {
-              if (submeter(repositorioReserva, idAutor, status) == 1) {
+              if (formKey.currentState!.validate()) {
+                //salvar
+                formKey.currentState!.save();
+
+                String dataString = dateFormat.format(data);
+                String beginString = formatTimeOfDay(begin);
+                String finishString = formatTimeOfDay(finish);
+
+                Reserve reserve = Reserve(
+                    id: UniqueKey().toString(),
+                    date: dataString,
+                    begin: beginString,
+                    finish: finishString,
+                    description: descricao,
+                    authorUserId: idAutor,
+                    keeperUserId: keeperUserId,
+                    keeperStatus: status,
+                    reserveStatus: 0,
+                    repeat: 0);
+
+                repositorioReserva.addReserva(reserve);
+
                 //voltar p home
                 Navigator.of(context).pop();
               }
@@ -175,7 +182,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Text(getText(0)),
+                  Text(getText(0, 'inicio')),
                   TextButton(
                     onPressed: () {
                       pickTime(context, 0);
@@ -187,7 +194,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Text(getText(1)),
+                  Text(getText(1, 'fim')),
                   TextButton(
                     onPressed: () {
                       pickTime(context, 1);

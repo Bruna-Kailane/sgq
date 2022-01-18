@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
-
 class Reserve {
   final String id;
-  final DateTime date;
-  final TimeOfDay begin;
-  final TimeOfDay finish;
+  final String date;
+  final String begin;
+  final String finish;
   final String description;
   final String authorUserId;
   final String keeperUserId;
@@ -53,9 +51,9 @@ class Reserve {
 
   Reserve copyWith({
     String? id,
-    DateTime? date,
-    TimeOfDay? begin,
-    TimeOfDay? finish,
+    String? date,
+    String? begin,
+    String? finish,
     String? description,
     String? authorUserId,
     String? keeperUserId,
