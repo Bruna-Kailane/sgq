@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgq/models/users.dart';
 import 'package:sgq/pages/home.dart';
 import 'package:sgq/pages/lista_area.dart';
 import 'package:sgq/pages/lista_type_user.dart';
 import 'package:sgq/pages/lista_users.dart';
+import 'package:sgq/pages/pedido_reserva.dart';
+import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -12,6 +15,12 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final autenticacaoServ = Provider.of<AutenticacaoServico>(context);
+    var repUser = Provider.of<RepositorioUsers>(context, listen: false);
+
+    Users autor = repUser.buscaEmailSenha(
+        autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha);
+    //se for prof, adm ou tecnico retorna 1- se for aluno retorna 0
+    int status = repUser.buscaTipo(autor);
 
     return Drawer(
       child: Column(
@@ -58,6 +67,14 @@ class CustomDrawer extends StatelessWidget {
             title: const Text("Usuários"),
           ),
           const Divider(),
+          if (status == 1)
+            ListTile(
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(PedidoReserva.routename);
+              },
+              title: const Text("Pedidos"),
+            ),
         ],
       ),
     );

@@ -92,23 +92,13 @@ class _CadastroReservaState extends State<CadastroReserva> {
     var repositorioReserva =
         Provider.of<RepositorioReserve>(context, listen: false);
     var repUser = Provider.of<RepositorioUsers>(context, listen: false);
-    List<Users> profs = [];
+    var profs = repUser.profTec();
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
-    for (var user in repUser.users) {
-      if (user.userTypeId == '-MqWYPF_OX9f_lBP3SMi' ||
-          user.userTypeId == '-MqX3STsynWDnGdTfrhz') {
-        profs.add(user);
-      }
-    }
-
-    String idAutor = repUser
-        .buscaEmailSenha(
-            autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha)
-        .id;
+    Users autor = repUser.buscaEmailSenha(
+        autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha);
     //se for prof, adm ou tecnico retorna 1- se for aluno retorna 0
-    int status = repUser.buscaTipo(repUser.buscaEmailSenha(
-        autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha));
+    int status = repUser.buscaTipo(autor);
 
     return Scaffold(
       appBar: AppBar(
@@ -130,7 +120,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
                     begin: beginString,
                     finish: finishString,
                     description: descricao,
-                    authorUserId: idAutor,
+                    authorUserId: autor.id,
                     keeperUserId: keeperUserId,
                     keeperStatus: status,
                     reserveStatus: 0,

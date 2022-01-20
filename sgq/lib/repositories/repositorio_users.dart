@@ -25,6 +25,17 @@ class RepositorioUsers with ChangeNotifier {
     return (_lista);
   }
 
+  List<Users> profTec() {
+    List<Users> listaProfTec = [];
+    for (var user in _lista) {
+      if (user.userTypeId == '-MqWYPF_OX9f_lBP3SMi' ||
+          user.userTypeId == '-MqX3STsynWDnGdTfrhz') {
+        listaProfTec.add(user);
+      }
+    }
+    return listaProfTec;
+  }
+
   int buscaTipo(Users user) {
     if (user.userTypeId == '-MqWY3Y2j8Qyrleru0VU' ||
         user.userTypeId == '-MqWYPF_OX9f_lBP3SMi' ||

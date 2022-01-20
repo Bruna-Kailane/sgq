@@ -23,8 +23,43 @@ class RepositorioReserve with ChangeNotifier {
         urlAPI, "/reserve.json", {'auth': autenticacaoServico.usuario?.token});
   }
 
-  List<Reserve> get tipo {
+  Uri _getReservaUrl(String id) {
+    return Uri.https(urlAPI, '/reserve/$id.json',
+        {'auth': autenticacaoServico.usuario!.token});
+  }
+
+  List<Reserve> get reservas {
     return UnmodifiableListView(_lista);
+  }
+
+  List<Reserve> pedidos(String id) {
+    List<Reserve> listaReserva = [];
+    for (var reserva in _lista) {
+      if (reserva.keeperUserId == id && reserva.keeperStatus == 0) {
+        listaReserva.add(reserva);
+      }
+    }
+    return listaReserva;
+  }
+
+  List<Reserve> pedidosAdm() {
+    List<Reserve> listaReserva = [];
+    for (var reserva in _lista) {
+      if (reserva.reserveStatus == 0) {
+        listaReserva.add(reserva);
+      }
+    }
+    return listaReserva;
+  }
+
+  List<Reserve> minhasReservas(String id) {
+    List<Reserve> listaReserva = [];
+    for (var reserva in _lista) {
+      if (reserva.authorUserId == id) {
+        listaReserva.add(reserva);
+      }
+    }
+    return listaReserva;
   }
 
   Reserve buscaId(String id) {
@@ -67,5 +102,29 @@ class RepositorioReserve with ChangeNotifier {
       _statusDados = StatusDadosRepositorio.disponiveis;
       notifyListeners();
     }
+  }
+
+  //ATUALIZANDO
+  Future<bool> updateReserva(Reserve reserva) async {
+    final resp = await http.patch(_getReservaUrl(reserva.id),
+        body: json.encode(reserva.toJson()));
+
+    if (resp.statusCode == 200) {
+      loadRemote();
+      return true;
+    }
+    return false;
+  }
+
+//DELETANDO
+  Future<bool> deleteReserva(String id) async {
+    final resp = await http.delete(_getReservaUrl(id));
+
+    if (resp.statusCode == 200) {
+      loadRemote();
+      notifyListeners();
+      return true;
+    }
+    return false;
   }
 }

@@ -5,10 +5,13 @@ import 'package:sgq/pages/cadastro_area.dart';
 import 'package:sgq/pages/cadastro_reserva.dart';
 import 'package:sgq/pages/cadastro_type_user.dart';
 import 'package:sgq/pages/cadastro_user.dart';
+import 'package:sgq/pages/descricao_reserva.dart';
 import 'package:sgq/pages/home.dart';
 import 'package:sgq/pages/lista_area.dart';
 import 'package:sgq/pages/lista_type_user.dart';
 import 'package:sgq/pages/lista_users.dart';
+import 'package:sgq/pages/minhas_reservas.dart';
+import 'package:sgq/pages/pedido_reserva.dart';
 import 'package:sgq/pages/splash.dart';
 import 'package:sgq/repositories/repositorio_education_area.dart';
 import 'package:sgq/repositories/repositorio_reserve.dart';
@@ -77,6 +80,9 @@ class MyApp extends StatelessWidget {
               ListaArea.routeName: (ctx) => const ListaArea(),
               ListaTypeUser.routeName: (ctx) => const ListaTypeUser(),
               ListaUsers.routeName: (ctx) => const ListaUsers(),
+              PedidoReserva.routename: (ctx) => const PedidoReserva(),
+              DescricaoReserva.routeName: (ctx) => const DescricaoReserva(),
+              MinhasReservas.routename: (ctx) => const MinhasReservas(),
             },
           );
         });
