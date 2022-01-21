@@ -6,6 +6,7 @@ import 'package:sgq/pages/descricao_reserva.dart';
 import 'package:sgq/repositories/repositorio_reserve.dart';
 import 'package:sgq/repositories/repositorio_users.dart';
 import 'package:sgq/services/autenticacao_servico.dart';
+import 'package:sgq/widget/custom_drawer.dart';
 
 class PedidoReserva extends StatefulWidget {
   static const String routename = '/PedidoReserva';
@@ -22,7 +23,7 @@ class _PedidoReservaState extends State<PedidoReserva> {
   Widget build(BuildContext context) {
     var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
     var repReserva = Provider.of<RepositorioReserve>(context);
-    var repUser = Provider.of<RepositorioUsers>(context, listen: false);
+    var repUser = Provider.of<RepositorioUsers>(context);
 
     Users autor = repUser.buscaEmailSenha(
         autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha);
@@ -83,7 +84,7 @@ class _PedidoReservaState extends State<PedidoReserva> {
                         onPressed: () {
                           excluir(lista[i]);
                         },
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                       ),
                     ),
                   ),
@@ -93,6 +94,7 @@ class _PedidoReservaState extends State<PedidoReserva> {
           ),
         ],
       ),
+      drawer: const CustomDrawer(),
     );
   }
 }

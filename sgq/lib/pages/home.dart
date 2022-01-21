@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgq/pages/calendario.dart';
 import 'package:sgq/pages/minhas_reservas.dart';
-import 'package:sgq/pages/pedido_reserva.dart';
 import 'package:sgq/repositories/repositorio_education_area.dart';
 import 'package:sgq/repositories/repositorio_reserve.dart';
 import 'package:sgq/repositories/repositorio_tipo_user.dart';
