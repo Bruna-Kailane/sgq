@@ -22,7 +22,7 @@ class _MinhasReservasState extends State<MinhasReservas> {
   Widget build(BuildContext context) {
     var autenticacaoServ = Provider.of<AutenticacaoServico>(context);
     var repReserva = Provider.of<RepositorioReserve>(context);
-    var repUser = Provider.of<RepositorioUsers>(context, listen: false);
+    var repUser = Provider.of<RepositorioUsers>(context);
 
     Users autor = repUser.buscaEmailSenha(
         autenticacaoServ.usuario!.email, autenticacaoServ.usuario!.senha);

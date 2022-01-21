@@ -55,7 +55,8 @@ class RepositorioReserve with ChangeNotifier {
   List<Reserve> minhasReservas(String id) {
     List<Reserve> listaReserva = [];
     for (var reserva in _lista) {
-      if (reserva.authorUserId == id) {
+      if (reserva.authorUserId == id ||
+          reserva.keeperUserId == id && reserva.keeperStatus == 1) {
         listaReserva.add(reserva);
       }
     }
