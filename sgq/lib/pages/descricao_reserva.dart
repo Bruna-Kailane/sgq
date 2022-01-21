@@ -16,15 +16,29 @@ class DescricaoReserva extends StatelessWidget {
     var repositorio = Provider.of<RepositorioReserve>(context, listen: false);
     var parametros =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    var repArea = Provider.of<RepositorioEducationArea>(context, listen: false);
+    var repUser = Provider.of<RepositorioUsers>(context, listen: false);
 
     final String id = parametros['id'];
     final reserva = repositorio.buscaId(id);
 
-    var repUser = Provider.of<RepositorioUsers>(context, listen: false);
     Users autor = repUser.buscaId(reserva.authorUserId);
-
-    var repArea = Provider.of<RepositorioEducationArea>(context, listen: false);
     EducationArea area = repArea.buscaId(autor.areaId);
+    String professor = repUser.buscaId(reserva.keeperUserId).name;
+    String autorizado = '';
+    String status = '';
+
+    if (reserva.keeperStatus == 0) {
+      autorizado = 'ainda não aceitou o pedido';
+    } else {
+      autorizado = 'pedido aceito!';
+    }
+
+    if (reserva.reserveStatus == 0) {
+      status = 'Aguardando Confirmação... ';
+    } else {
+      status = 'Reserva Confirmada!';
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -104,6 +118,27 @@ class DescricaoReserva extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
+            Row(
+              children: [
+                const Text(
+                  "Professor:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5),
+                Text("$professor : $autorizado "),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const Text(
+                  "Status Reserva:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5),
+                Text(status),
+              ],
+            )
           ],
         ),
       ),
