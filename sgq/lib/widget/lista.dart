@@ -23,7 +23,6 @@ class Lista extends StatelessWidget {
       appBar: AppBar(
         title: Text(titulo),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.list)),
           if (repUser.verificaAdm(repUser.buscaEmailSenha(
                   autenticacaoServ.usuario!.email,
                   autenticacaoServ.usuario!.senha)) ==
