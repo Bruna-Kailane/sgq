@@ -29,7 +29,8 @@ class RepositorioUsers with ChangeNotifier {
     List<Users> listaProfTec = [];
     for (var user in _lista) {
       if (user.userTypeId == '-MqWYPF_OX9f_lBP3SMi' ||
-          user.userTypeId == '-MqX3STsynWDnGdTfrhz') {
+          user.userTypeId == '-MqX3STsynWDnGdTfrhz' ||
+          user.userTypeId == '-MqWY3Y2j8Qyrleru0VU') {
         listaProfTec.add(user);
       }
     }

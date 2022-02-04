@@ -37,8 +37,6 @@ class _CalendarioState extends State<Calendario> {
     var repositorio = Provider.of<RepositorioReserve>(context);
     var lista = repositorio.reservas;
     var repUser = Provider.of<RepositorioUsers>(context, listen: false);
-    String professor;
-    String autor;
 
     List<Reserve> getEventsForDay(DateTime day) {
       List<Reserve> reservaDay = [];
