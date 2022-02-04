@@ -24,6 +24,7 @@ class _CadastroReservaState extends State<CadastroReserva> {
   TimeOfDay begin = TimeOfDay.now();
   TimeOfDay finish = TimeOfDay.now();
   var repete = 0;
+  int numRepete = 0;
   var keeperUserId;
 
   Future selecionarData(BuildContext context) async {
@@ -124,9 +125,30 @@ class _CadastroReservaState extends State<CadastroReserva> {
                     keeperUserId: keeperUserId,
                     keeperStatus: status,
                     reserveStatus: 0,
-                    repeat: 0);
+                    repeat: repete,
+                    numRepeat: numRepete);
 
-                repositorioReserva.addReserva(reserve);
+                if (repete == 1) {
+                  for (var i = 0; i < numRepete; i++) {
+                    repositorioReserva.addReserva(reserve);
+                    setState(() {
+                      data = data.add(Duration(days: 7));
+                    });
+                    dataString = dateFormat.format(data);
+                    reserve.date = dataString;
+                  }
+                } else if (repete == 2) {
+                  for (var i = 0; i < numRepete; i++) {
+                    repositorioReserva.addReserva(reserve);
+                    setState(() {
+                      data = data.add(Duration(days: 30));
+                    });
+                    dataString = dateFormat.format(data);
+                    reserve.date = dataString;
+                  }
+                } else {
+                  repositorioReserva.addReserva(reserve);
+                }
 
                 //voltar p home
                 Navigator.of(context).pop();
@@ -214,6 +236,61 @@ class _CadastroReservaState extends State<CadastroReserva> {
                         ))
                     .toList(),
               ),
+              if (status == 1)
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Radio<int>(
+                            value: 0,
+                            onChanged: (newValue) {
+                              setState(() {
+                                repete = newValue!;
+                              });
+                            },
+                            groupValue: repete),
+                        const Text("Nunca"),
+                        Radio<int>(
+                            value: 1,
+                            onChanged: (newValue) {
+                              setState(() {
+                                repete = newValue!;
+                              });
+                            },
+                            groupValue: repete),
+                        const Text("Semanalmente"),
+                        Radio<int>(
+                            value: 2,
+                            onChanged: (newValue) {
+                              setState(() {
+                                repete = newValue!;
+                              });
+                            },
+                            groupValue: repete),
+                        const Text("Mensalmente"),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Formulario(
+                      label: "Numero de repetições",
+                      hint: "Por quantas semanas/meses será repetido",
+                      icon: const Icon(Icons.text_fields),
+                      keyboardType: TextInputType.number,
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return "Obrigatorio";
+                        }
+                        int? valor = int.tryParse(text);
+                        if (valor == null || valor <= 0) {
+                          return "Valor inválido!";
+                        }
+                      },
+                      save: (text) {
+                        numRepete = int.parse(text ?? '0');
+                      },
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

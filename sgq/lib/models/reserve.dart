@@ -1,6 +1,6 @@
 class Reserve {
   final String id;
-  final String date;
+  String date;
   final String begin;
   final String finish;
   final String description;
@@ -9,6 +9,7 @@ class Reserve {
   final int keeperStatus;
   final int reserveStatus;
   final int repeat;
+  final int numRepeat;
 
   Reserve(
       {required this.id,
@@ -20,7 +21,8 @@ class Reserve {
       required this.keeperUserId,
       required this.keeperStatus,
       required this.reserveStatus,
-      required this.repeat});
+      required this.repeat,
+      required this.numRepeat});
 
   Reserve.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -32,7 +34,8 @@ class Reserve {
         keeperUserId = json['keeperUserId'],
         keeperStatus = json['keeperStatus'],
         reserveStatus = json['reserveStatus'],
-        repeat = json['repeat'];
+        repeat = json['repeat'],
+        numRepeat = json['numRepeat'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -45,7 +48,8 @@ class Reserve {
       'keeperUserId': keeperUserId,
       'keeperStatus': keeperStatus,
       'reserveStatus': reserveStatus,
-      'repeat': repeat
+      'repeat': repeat,
+      'numRepeat': numRepeat,
     };
   }
 
@@ -60,6 +64,7 @@ class Reserve {
     int? keeperStatus,
     int? reserveStatus,
     int? repeat,
+    int? numRepeat,
   }) =>
       Reserve(
           id: id ?? this.id,
@@ -71,5 +76,6 @@ class Reserve {
           keeperUserId: keeperUserId ?? this.keeperUserId,
           keeperStatus: keeperStatus ?? this.keeperStatus,
           reserveStatus: reserveStatus ?? this.reserveStatus,
-          repeat: repeat ?? this.repeat);
+          repeat: repeat ?? this.repeat,
+          numRepeat: numRepeat ?? this.numRepeat);
 }

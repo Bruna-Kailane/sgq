@@ -27,6 +27,7 @@ class DescricaoReserva extends StatelessWidget {
     String professor = repUser.buscaId(reserva.keeperUserId).name;
     String autorizado = '';
     String status = '';
+    String repete = '';
 
     if (reserva.keeperStatus == 0) {
       autorizado = 'ainda não aceitou o pedido';
@@ -38,6 +39,14 @@ class DescricaoReserva extends StatelessWidget {
       status = 'Aguardando Confirmação... ';
     } else {
       status = 'Reserva Confirmada!';
+    }
+
+    if (reserva.repeat == 0) {
+      repete = 'Nunca';
+    } else if (reserva.repeat == 1) {
+      repete = 'Semanalmente';
+    } else {
+      repete = 'Mensalmente';
     }
 
     return Scaffold(
@@ -121,6 +130,17 @@ class DescricaoReserva extends StatelessWidget {
             Row(
               children: [
                 const Text(
+                  "Repete:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5),
+                Text(repete),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const Text(
                   "Professor:",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -145,8 +165,3 @@ class DescricaoReserva extends StatelessWidget {
     );
   }
 }
-
-  /*TimeOfDay stringToTimeOfDay(String tod) {
-    final format = DateFormat.jm(); //"6:00 AM"
-    return TimeOfDay.fromDateTime(format.parse(tod));
-  }*/
