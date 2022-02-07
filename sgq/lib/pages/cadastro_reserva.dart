@@ -271,24 +271,26 @@ class _CadastroReservaState extends State<CadastroReserva> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Formulario(
-                      label: "Numero de repetições",
-                      hint: "Por quantas semanas/meses será repetido",
-                      icon: const Icon(Icons.text_fields),
-                      keyboardType: TextInputType.number,
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return "Obrigatorio";
-                        }
-                        int? valor = int.tryParse(text);
-                        if (valor == null || valor <= 0) {
-                          return "Valor inválido!";
-                        }
-                      },
-                      save: (text) {
-                        numRepete = int.parse(text ?? '0');
-                      },
-                    ),
+                    if (repete > 0)
+                      Formulario(
+                        label: "Numero de repetições",
+                        hint: "Por quantas semanas/meses será repetido",
+                        icon: const Icon(Icons.text_fields),
+                        keyboardType: TextInputType.number,
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return "Obrigatorio";
+                          }
+                          int? valor = int.tryParse(text);
+
+                          if (valor == null || valor <= 0) {
+                            return "Valor inválido!";
+                          }
+                        },
+                        save: (text) {
+                          numRepete = int.parse(text ?? '0');
+                        },
+                      ),
                   ],
                 ),
             ],
